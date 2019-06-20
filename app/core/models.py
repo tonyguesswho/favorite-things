@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from django.contrib.postgres.fields import CICharField
+
+
+def validate_min_length(description):
+    if len(description) > 0 and len(description) < 10:
+        raise ValidationError(
+            _('description is not up to ten characters'),
+            params={'value': description},
+        )
+
 
 class AbstractTimeStampModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -16,7 +29,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """Creates and saves a new user"""
         if not email:
-            raise ValueError('Email is required')
+            raise ValueError(_('Email is required'))
 
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
@@ -43,3 +56,46 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractTimeStampModel):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Favorite(AbstractTimeStampModel):
+
+    title = models.CharField(max_length=50)
+
+    description = models.TextField(
+        blank=True,
+        validators=[validate_min_length])
+
+    ranking = models.IntegerField()
+
+    category = models.ForeignKey(
+        'Category',
+        on_delete=models.CASCADE,
+        related_name='favorites')
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+        )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'title'],
+                name='unique_title'),
+        ]
+
+    def __str__(self):
+        return self.title
+
+
+class Category(AbstractTimeStampModel):
+
+    name = CICharField(
+        db_index=True,
+        max_length=50,
+        unique=True,
+        error_messages={'unique': u'Category name already exists'})
+
+    def __str__(self):
+        return self.name

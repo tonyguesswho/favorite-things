@@ -1,5 +1,18 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from core import models
+
+
+def sample_user(email='test@gmail.com', password='password'):
+    """Creare a sample user"""
+
+    return get_user_model().objects.create_user(email, password)
+
+
+def sample_category():
+    """Creare a sample category"""
+
+    return models.Category.objects.create(name='Rivers')
 
 
 class ModelTests(TestCase):
@@ -35,3 +48,20 @@ class ModelTests(TestCase):
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_category_str(self):
+        """Test create category string representation"""
+
+        category = models.Category.objects.create(name='Rivers')
+        self.assertEqual(str(category), category.name)
+
+    def test_favorite_str(self):
+        """Test create category string representation"""
+
+        favorite_thing = models.Favorite.objects.create(
+            title='Nile',
+            user=sample_user(),
+            description="The river nile is really big",
+            ranking=1,
+            category=sample_category())
+        self.assertEqual(str(favorite_thing), favorite_thing.title)
