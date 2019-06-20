@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'core',
-    'user'
+    'user',
+    'favorite',
+    'category',
+    'django_nose'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +131,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'core.User'
+
+APPEND_SLASH=False
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--cover-package=core,user,favorite,category',
+    '--cover-html'
+]
