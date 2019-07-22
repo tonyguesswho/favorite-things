@@ -20,19 +20,6 @@ def sample_category(name='place'):
     return Category.objects.create(name=name)
 
 
-class PublicFavoritesApiTests(TestCase):
-    """Test the publically available favorite things API"""
-
-    def setUp(self):
-        self.client = APIClient()
-
-    def test_login_required(self):
-        """Test that login is required to access this endpoint"""
-        res = self.client.get(CATEGORY_URL)
-
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
-
-
 class PrivateCategoryApiTests(TestCase):
     """test authenticated favorite api"""
 
@@ -52,9 +39,9 @@ class PrivateCategoryApiTests(TestCase):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data['results']), 2)
-        self.assertEqual(len(res.data['results']), len(serializer.data))
-        self.assertEqual(res.data['results'], serializer.data)
+        self.assertEqual(len(res.data), 2)
+        self.assertEqual(len(res.data), len(serializer.data))
+        self.assertEqual(res.data, serializer.data)
 
     def test_get_category_details(self):
         """"test viewing category details"""

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from core.models import Favorite
+from core.models import Favorite, CoreHistoricalfavorite
 from favorite import serializers
 from favorite.renderers import FavoriteJsonRenderer
 from rest_framework.response import Response
@@ -15,9 +15,10 @@ class FavoriteViewset(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     renderer_classes = (FavoriteJsonRenderer,)
     permission_classes = (IsAuthenticated,)
+    filter_fields = ('category_id',)
 
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+        return self.queryset.filter(user=self.request.user).order_by('ranking')
 
     def get_serializer_class(self):
         """Return serializer class"""
@@ -34,3 +35,20 @@ class FavoriteViewset(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         adjust_ranking(request, None, instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class FavoriteHistoryViewset(viewsets.ReadOnlyModelViewSet):
+    """Manage audits for favorite things"""
+    queryset = CoreHistoricalfavorite.objects.all()
+    serializer_class = serializers.HistorySerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    pagination_class = None
+
+    def get_queryset(self):
+        return self.queryset.filter(
+            history_user=self.request.user).order_by('-history_date')
+
+    def get_serializer_class(self):
+        """Return serializer class"""
+        return self.serializer_class

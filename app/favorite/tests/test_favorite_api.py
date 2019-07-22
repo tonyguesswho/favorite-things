@@ -3,11 +3,13 @@ from django.urls import reverse
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
-from core.models import Favorite, Category
-from favorite.serializers import FavoriteDetailsSerializer, FavoriteSerializer
+from core.models import Favorite, Category, CoreHistoricalfavorite
+from favorite.serializers import FavoriteDetailsSerializer,\
+                                FavoriteSerializer, HistorySerializer
 
 
 FAVORITE_URL = reverse('favorite:favorite-list')
+HISTORY_URL = reverse('favorite:history-list')
 
 
 def favorite_details_url(id):
@@ -72,6 +74,16 @@ class PrivateFavoriteApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data['results']), len(serializer.data))
         self.assertEqual(res.data['results'], serializer.data)
+
+    def test_retrieve_history(self):
+        """Test retreiving history"""
+        res = self.client.get(HISTORY_URL)
+
+        history = CoreHistoricalfavorite.objects.all()
+        serializer = HistorySerializer(history, many=True)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), len(serializer.data))
+        self.assertEqual(res.data, serializer.data)
 
     def test_favorite_list_limited_to_user(self):
         user2 = get_user_model().objects.create_user(
@@ -179,18 +191,6 @@ class PrivateFavoriteApiTests(TestCase):
         res = user_client.post(FAVORITE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
-    def test_partial_update_favorite_thing(self):
-        """Test updating a favorite thing with patch"""
-        category = sample_category()
-        favorite_thing = sample_favorite_thing(
-            user=self.user,
-            category=category)
-        url = favorite_details_url(favorite_thing.id)
-        self.client.patch(url, {'title': 'hand'})
-
-        favorite_thing.refresh_from_db()
-        self.assertEqual(favorite_thing.title, 'hand')
-
     def test_full_update_favorite_thing(self):
         """Test updating a favorite thing with  put"""
         category = sample_category()
@@ -201,7 +201,7 @@ class PrivateFavoriteApiTests(TestCase):
         payload = {
             'title': 'table',
             'description': "",
-            'ranking': 10,
+            'ranking': 1,
             'categoryId': category.id
         }
         self.client.put(url, payload)

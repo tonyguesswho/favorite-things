@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Favorite, Category
+from core.models import Favorite, Category, CoreHistoricalfavorite
 from category.serializers import CategorySerializer
 from django.utils.translation import ugettext_lazy as _
 from core.helpers.favorite_things import adjust_ranking
@@ -31,7 +31,8 @@ class FavoriteSerializer(serializers.ModelSerializer):
                   'title',
                   'description',
                   'metadata',
-                  'ranking', 'categoryId', 'createdDate', 'modifiedDate')
+                  'ranking',
+                  'categoryId', 'createdDate', 'modifiedDate',)
         read_only_fields = ('id',)
 
     def get_created_at(self, instance):
@@ -58,11 +59,23 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get('request')
+        total_fav = Favorite.objects.filter(
+            user=request.user,
+            category=validated_data['category']).count()
+        ranking = validated_data['ranking']
+        if ranking > total_fav:
+            validated_data['ranking'] = total_fav + 1
         adjust_ranking(request, validated_data)
         return super(FavoriteSerializer, self).create(validated_data)
 
     def update(self, instance, validated_data):
         request = self.context.get('request')
+        total_fav = Favorite.objects.filter(
+            user=request.user,
+            category=validated_data['category']).count()
+        ranking = validated_data['ranking']
+        if ranking >= total_fav:
+            validated_data['ranking'] = total_fav
         adjust_ranking(request, validated_data, instance)
         return super(FavoriteSerializer, self).update(instance, validated_data)
 
@@ -86,7 +99,7 @@ class FavoriteDetailsSerializer(serializers.ModelSerializer):
                   'category',
                   'metadata',
                   'createdDate',
-                  'modifiedDate')
+                  'modifiedDate',)
         read_only_fields = ('id',)
 
     def get_created_at(self, instance):
@@ -94,3 +107,11 @@ class FavoriteDetailsSerializer(serializers.ModelSerializer):
 
     def get_updated_at(self, instance):
         return instance.updated_at.isoformat()
+
+
+class HistorySerializer(serializers.ModelSerializer):
+    """Serializer for favorite audit object"""
+
+    class Meta:
+        model = CoreHistoricalfavorite
+        fields = '__all__'

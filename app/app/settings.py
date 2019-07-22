@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +21,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wez@&&ow!ln$enhop%6*qw*0b@cxiif)wvk4jha+4+zq5t60=l'
+SECRET_KEY = config('DJANGO_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*'] if DEBUG else ['8eiy0d8mpd.execute-api.us-east-1.amazonaws.com']
 
 
 # Application definition
@@ -44,10 +46,15 @@ INSTALLED_APPS = [
     'user',
     'favorite',
     'category',
-    'django_nose'
+    'corsheaders',
+    'django_filters',
+    'simple_history',
+    'django_s3_storage',
+    'zappa_django_utils',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -83,14 +91,17 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.postgresql',
-        "HOST": os.environ.get('DB_HOST'),
-        "NAME": os.environ.get('DB_NAME'),
-        "USER": os.environ.get('DB_USER'),
-        "HOST": os.environ.get('DB_HOST'),
-        "PASSWORD": os.environ.get('DB_PASS'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASS'),
+        'HOST': config('DB_HOST'),
+        'PORT': '5432',
     }
+
 }
+
+
 
 
 # Password validation
@@ -131,21 +142,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+S3_BUCKET = "zappa-hb0fbtvzh"
+
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+
+AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET
+
+STATIC_URL = "https://%s.s3.amazonaws.com/" % S3_BUCKET
+
 AUTH_USER_MODEL = 'core.User'
 
 APPEND_SLASH=False
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '--cover-package=core,user,favorite,category',
-    '--with-coverage',
-    '--cover-html'
-]
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'core.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20,
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
