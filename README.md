@@ -207,31 +207,27 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
 cd into the client folder and run npm install
 ```
 
-- Create a .env file using the .env.example file in the client folder
+- Before running the below commands ensure to cd into the client directory and create environment variables and save them in .env.development file
 ```
-add this to the .env file VUE_APP_API_URL=http://127.0.0.1:8000'
+VUE_APP_AXIOS_BASE_URL='http://127.0.0.1:8000/'
 ```
+```
+This application uses the browser's cookie for authentication, ensure the base url matches the url you're using for the frontend.
+```
+- Compiles and hot-reloads for development
+```
+make serve-client
 ```
 
+- Compiles and minifies for production
 ```
-npm run serve
+make build-client
 ```
 
 - Open Application in browser
 ```
 http://127.0.0.1:8080
-
 ```
-- To get a build file for deploying to production
-```
-npm run build
-
-```
-The resulting static file can then be deployed using any platform
-
-I deployed the VUE app on Netlify
-
-
 ## Other Links
 
 1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/develop/myself.json)
