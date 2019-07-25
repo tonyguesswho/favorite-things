@@ -23,7 +23,7 @@ The api built using Django Rest framework deployed in AWS Lambda using Zappa pro
 
 - FrontEnd
 
-The FrontEnd is a VueJs application located in the client folder.
+The FrontEnd is a VueJs application located in the client folder deployed on netlify.
 
 * Here is the [ LIVE FRONTEND URL](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/) of the application
 
@@ -199,7 +199,7 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
 
 
 * Setting up the front end locally
-#### (FRONTEND)
+#### (Setting up the front end locally)
 - Check that Node (recommended v11.12+) and npm are installed on your machine.
 
 - Install dependencies
@@ -207,26 +207,24 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
 cd into the client folder and run npm install
 ```
 
-- Before running the below commands ensure to cd into the client directory and create environment variables and save them in .env.development file
+- Create .env file in the client folder using the .env.example file as reference, add this to the .env
 ```
 VUE_APP_AXIOS_BASE_URL='http://127.0.0.1:8000/'
 ```
+- Run app
 ```
-This application uses the browser's cookie for authentication, ensure the base url matches the url you're using for the frontend.
+npm run serve
 ```
-- Compiles and hot-reloads for development
-```
-make serve-client
-```
-
-- Compiles and minifies for production
-```
-make build-client
-```
-
 - Open Application in browser
 ```
 http://127.0.0.1:8080
+
+- Production build
+```
+npm run build
+```
+
+
 ```
 ## Other Links
 
