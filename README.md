@@ -25,7 +25,7 @@ The api built using Django Rest framework deployed in AWS Lambda using Zappa pro
 
 The FrontEnd is a VueJs application located in the client folder.
 
-* Here is a link [FRONTEND](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/) to user interface of the applicationd
+* Here is the [ LIVE FRONTEND URL](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/) of the application
 
 
 
