@@ -37,7 +37,7 @@ I created  a test user to ease the process of testing the application
 
 - Django
 - DRF
-- Postgres
+- Postgres(AWS RDS)
 - ZAPPA(AWS LAMBDA)
 - Docker
 - VueJS
