@@ -224,6 +224,10 @@ http://127.0.0.1:8080
 npm run build
 ```
 
+- Entity Realtionship diagram
+
+![entity relationship diagram (2)](https://user-images.githubusercontent.com/19865565/61914085-3217e680-af37-11e9-9982-0a0d09f2b36e.png)
+
 ## Other Links
 
 1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/update-readme/myself.json)
