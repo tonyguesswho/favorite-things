@@ -27,6 +27,10 @@ The FrontEnd is a VueJs application located in the client folder.
 
 * Here is the [ LIVE FRONTEND URL](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/) of the application
 
+I created  a test user to ease the testing of th eapplication
+- Test User
+* email - testuser@test.com
+* password - password
 
 
 ## Technology Stack - BackEnd
