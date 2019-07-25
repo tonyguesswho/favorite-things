@@ -23,23 +23,24 @@ The api built using Django Rest framework deployed in AWS Lambda using Zappa pro
 
 - FrontEnd
 
-The FrontEnd is a VueJs application located in the client folder.
+The FrontEnd is a VueJs application located in the client folder deployed on netlify.
 
 * Here is the [ LIVE FRONTEND URL](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/) of the application
 
-I created  a test user to ease the testing of th eapplication
-- Test User
+I created  a test user to ease the process of testing the application
+## Test User
 * email - testuser@test.com
 * password - password
 
 
-## Technology Stack - BackEnd
+## Technology Stack
 
 - Django
 - DRF
-- Postgresql
+- Postgres
 - ZAPPA(AWS LAMBDA)
 - Docker
+- VueJS
 
 
 ###  Setting Up For Local Development
@@ -225,9 +226,9 @@ npm run build
 
 ## Other Links
 
-1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/develop/myself.json)
-2. Link to the answers to the remaining technical questions is [answers.md](https://github.com/tonyguesswho/favorite-things/blob/develop/answers.md)
-3. Link to the debugging quiz is [quiz.py](https://github.com/tonyguesswho/favorite-things/blob/develop/quiz.py)
+1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/update-readme/myself.json)
+2. Link to the answers to the remaining technical questions is [answers.md](https://github.com/tonyguesswho/favorite-things/blob/update-readme/answers.md)
+3. Link to the debugging quiz is [quiz.py](https://github.com/tonyguesswho/favorite-things/blob/update-readme/quiz.py)
 
 
 I will appreciate any feedback on this project :)
