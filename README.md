@@ -191,9 +191,7 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
 
 * Landing Page
 
-![User INterface](![Screenshot_2019-07-25 client](https://user-images.githubusercontent.com/19865565/61905725-afd0f780-af21-11e9-9cf8-31e849c1f5db.png))
-
-
+![User Interface](https://user-images.githubusercontent.com/19865565/61905725-afd0f780-af21-11e9-9cf8-31e849c1f5db.png)
 
 ## Other Links
 
