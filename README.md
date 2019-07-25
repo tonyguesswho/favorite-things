@@ -181,13 +181,12 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
     ```
     zappa update dev
     ```
-
-- Here is a link to the deployed version of the application
-
-https://skudz1hazf.execute-api.us-east-2.amazonaws.com/dev
+![UI LINK](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/)
 
 - Interact with backend API using the DRF template view
  https://8eiy0d8mpd.execute-api.us-east-1.amazonaws.com/dev/api/category/categories/
+
+
 
 * Landing Page
 
@@ -197,9 +196,9 @@ https://skudz1hazf.execute-api.us-east-2.amazonaws.com/dev
 
 ## Other Links
 
-1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/master/myself.json)
-2. Link to the answers to the remaining technical questions is [answers.md](https://github.com/tonyguesswho/favorite-things/blob/master/answers.md)
-3. Link to the debugging quiz is [quiz.py](https://github.com/tonyguesswho/favorite-things/blob/master/quiz.py)
+1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/develop/myself.json)
+2. Link to the answers to the remaining technical questions is [answers.md](https://github.com/tonyguesswho/favorite-things/blob/develop/answers.md)
+3. Link to the debugging quiz is [quiz.py](https://github.com/tonyguesswho/favorite-things/blob/develop/quiz.py)
 
 
 I hope you find my concept of solving this problem helpful. :)
