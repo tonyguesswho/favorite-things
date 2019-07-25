@@ -181,7 +181,8 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
     ```
     zappa update dev
     ```
-![UI LINK](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com/)
+
+[UI LINK](https://5d39aaf9a40c820009a38bd9--elegant-agnesi-f6c341.netlify.com "Homepage")
 
 - Interact with backend API using the DRF template view
  https://8eiy0d8mpd.execute-api.us-east-1.amazonaws.com/dev/api/category/categories/
