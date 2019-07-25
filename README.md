@@ -1,4 +1,4 @@
-## favorite Things
+## Favorite Things  App
 
 ## Description
 The **favorite-things-app** is an application that allows the user to track and mannage their favorite things. The project is divided into two parts. The Frontend build on **VueJs - Javascript** and the Backend built on **Django(DRF) - Python**.
@@ -197,6 +197,41 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
 
 ![User Interface](https://user-images.githubusercontent.com/19865565/61905725-afd0f780-af21-11e9-9cf8-31e849c1f5db.png)
 
+
+* Setting up the front end locally
+#### (FRONTEND)
+- Check that Node (recommended v11.12+) and npm are installed on your machine.
+
+- Install dependencies
+```
+cd into the client folder and run npm install
+```
+
+- Create a .env file using the .env.example file in the client folder
+```
+add this to the .env file VUE_APP_API_URL=http://127.0.0.1:8000'
+```
+```
+
+```
+npm run serve
+```
+
+- Open Application in browser
+```
+http://127.0.0.1:8080
+
+```
+- To get a build file for deploying to production
+```
+npm run build
+
+```
+The resulting static file can then be deployed using any platform
+
+I deployed the VUE app on Netlify
+
+
 ## Other Links
 
 1. Link to the description of myself is [myself.json](https://github.com/tonyguesswho/favorite-things/blob/develop/myself.json)
@@ -204,4 +239,4 @@ The API was deployed usind Zappa and the zappa_settings.json file is located in 
 3. Link to the debugging quiz is [quiz.py](https://github.com/tonyguesswho/favorite-things/blob/develop/quiz.py)
 
 
-I hope you find my concept of solving this problem helpful. :)
+I will appreciate any feedback on this project :)
