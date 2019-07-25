@@ -1,10 +1,14 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-//import store from "./store";
 import VueNoty from "vuejs-noty";
 import "vuejs-noty/dist/vuejs-noty.css";
-Vue.use(VueNoty);
+
+Vue.use(VueNoty, {
+  timeout: 4000,
+  progressBar: true,
+  layout: "topCenter"
+});
 
 Vue.config.productionTip = false;
 const userData = localStorage.getItem("user");

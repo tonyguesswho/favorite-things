@@ -1,0 +1,32 @@
+{
+    "personalDetails": {
+        "firstName": "Anthony",
+        "lastName": "Ugwu",
+        "middleName": "Ifeanyi",
+        "email": "anthonyugwu234@gmail.com",
+        "phone": "+2348107268142",
+        "moreAboutMe":"I am a full stack software developer with over 3 years professional experinece in python and javascript. I enjoy playing soccer and working on interesting projects. I have had the opportunity of working for some amazing companies. Presently I work full time with Andela building Internal projects and also working with Andela partners. I also have over one year expereince working remotely with team members spanning various time zones."
+    },
+    "education": [
+        {
+            "school": "University of Nigeria Nsukka",
+            "startYear": "2011",
+            "endYear": "2016",
+            "degree": "B.Engr Mechanical Engineering"
+        }
+    ],
+    "volunteerExperience": [
+        {
+            "organisation": "A PLACE OF HOPE FOUNDATION (Nsukka Enugu, Nigeria)",
+            "role": "Helped introduce some the disaplaced kids to the concept of computer programming",
+            "cause": "Education",
+            "description": "The place of hope foundationn provides accommodation and Education kids displaced due to violence"
+        }
+    ],
+    "languages": [
+        {
+            "language": "English",
+            "proficiencyLevel": "Very proficient"
+        }
+    ]
+}
