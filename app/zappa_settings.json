@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "aws_region": "us-east-1",
+        "django_settings": "app.settings",
+        "profile_name": "default",
+        "project_name": "app",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-z0ek9qvg4",
+        "vpc_config" : {
+            "SubnetIds": [ "subnet-087f900e91b74bc30","subnet-0cbaae0d57eeaf68b" ],
+            "SecurityGroupIds": [ "sg-0cba61dcff5ed7286" ]
+        }
+    }
+}

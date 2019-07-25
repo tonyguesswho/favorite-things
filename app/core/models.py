@@ -6,6 +6,10 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import CICharField
+from django.contrib.postgres.fields import JSONField
+from django.core.validators import MinValueValidator
+from simple_history.models import HistoricalRecords
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 def validate_min_length(description):
@@ -66,7 +70,9 @@ class Favorite(AbstractTimeStampModel):
         blank=True,
         validators=[validate_min_length])
 
-    ranking = models.IntegerField()
+    ranking = models.IntegerField(validators=[MinValueValidator(1)])
+
+    metadata = JSONField(default=dict, encoder=DjangoJSONEncoder)
 
     category = models.ForeignKey(
         'Category',
@@ -77,6 +83,7 @@ class Favorite(AbstractTimeStampModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
         )
+    history = HistoricalRecords()
 
     class Meta:
         constraints = [
@@ -99,3 +106,26 @@ class Category(AbstractTimeStampModel):
 
     def __str__(self):
         return self.name
+
+
+class CoreHistoricalfavorite(models.Model):
+    id = models.IntegerField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    ranking = models.IntegerField()
+    metadata = JSONField()
+    history_id = models.AutoField(primary_key=True)
+    history_date = models.DateTimeField()
+    history_change_reason = models.CharField(
+        max_length=100, blank=True, null=True)
+    history_type = models.CharField(max_length=1)
+    category_id = models.IntegerField(blank=True, null=True)
+    history_user = models.ForeignKey(
+        'User', models.DO_NOTHING, blank=True, null=True)
+    user_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'core_historicalfavorite'

@@ -3,11 +3,13 @@ from django.urls import reverse
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
-from core.models import Favorite, Category
-from favorite.serializers import FavoriteDetailsSerializer, FavoriteSerializer
+from core.models import Favorite, Category, CoreHistoricalfavorite
+from favorite.serializers import FavoriteDetailsSerializer,\
+                                FavoriteSerializer, HistorySerializer
 
 
 FAVORITE_URL = reverse('favorite:favorite-list')
+HISTORY_URL = reverse('favorite:history-list')
 
 
 def favorite_details_url(id):
@@ -44,7 +46,7 @@ class PublicFavoritesApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateRecipeApiTests(TestCase):
+class PrivateFavoriteApiTests(TestCase):
     """test authenticated favorite api"""
 
     def setUp(self):
@@ -56,7 +58,7 @@ class PrivateRecipeApiTests(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_retrieve_favorite_things(self):
-        """Test retreiving a list of recipe"""
+        """Test retreiving a list of favorite things"""
         sample_favorite_thing(
             user=self.user,
             title="peter",
@@ -69,6 +71,16 @@ class PrivateRecipeApiTests(TestCase):
 
         favorite_things = Favorite.objects.all()
         serializer = FavoriteDetailsSerializer(favorite_things, many=True)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data['results']), len(serializer.data))
+        self.assertEqual(res.data['results'], serializer.data)
+
+    def test_retrieve_history(self):
+        """Test retreiving history"""
+        res = self.client.get(HISTORY_URL)
+
+        history = CoreHistoricalfavorite.objects.all()
+        serializer = HistorySerializer(history, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), len(serializer.data))
         self.assertEqual(res.data, serializer.data)
@@ -90,8 +102,8 @@ class PrivateRecipeApiTests(TestCase):
         favorite_things = Favorite.objects.filter(user=self.user)
         serializer = FavoriteDetailsSerializer(favorite_things, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data), 1)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(len(res.data['results']), 1)
+        self.assertEqual(res.data['results'], serializer.data)
 
     def test_get_favorite_thing_details(self):
         """"test viewing favorite things details"""
@@ -130,13 +142,13 @@ class PrivateRecipeApiTests(TestCase):
         res = self.client.post(FAVORITE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            res.data['description'][0],
+            res.data['errors']['description'][0],
             'description is not up to ten characters')
         self.assertEqual(
-            res.data['ranking'][0],
+            res.data['errors']['ranking'][0],
             'A valid integer is required.')
         self.assertEqual(
-            res.data['categoryId'][0],
+            res.data['errors']['categoryId'][0],
             'The category id does not exist.')
 
     def test_create_favorite_thing_with_same_title(self):
@@ -154,7 +166,7 @@ class PrivateRecipeApiTests(TestCase):
         res = self.client.post(FAVORITE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            res.data['title'][0],
+            res.data['errors']['title'][0],
             'Title already exists')
 
     def test_create_favorite_thing_with_same_title_different_users(self):
@@ -177,20 +189,7 @@ class PrivateRecipeApiTests(TestCase):
         user_client = APIClient()
         user_client.force_authenticate(user2)
         res = user_client.post(FAVORITE_URL, payload)
-        print(res.data)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
-    def test_partial_update_favorite_thing(self):
-        """Test updating a favorite thing with patch"""
-        category = sample_category()
-        favorite_thing = sample_favorite_thing(
-            user=self.user,
-            category=category)
-        url = favorite_details_url(favorite_thing.id)
-        self.client.patch(url, {'title': 'hand'})
-
-        favorite_thing.refresh_from_db()
-        self.assertEqual(favorite_thing.title, 'hand')
 
     def test_full_update_favorite_thing(self):
         """Test updating a favorite thing with  put"""
@@ -202,27 +201,7 @@ class PrivateRecipeApiTests(TestCase):
         payload = {
             'title': 'table',
             'description': "",
-            'ranking': 10,
-            'categoryId': category.id
-        }
-        self.client.put(url, payload)
-
-        favorite_thing.refresh_from_db()
-        self.assertEqual(favorite_thing.title, payload['title'])
-        self.assertEqual(favorite_thing.description, payload['description'])
-        self.assertEqual(favorite_thing.ranking, payload['ranking'])
-
-    def test_update_favorite_thing_with_same_title(self):
-        """Test updating a favorite thing with  put"""
-        category = sample_category()
-        favorite_thing = sample_favorite_thing(
-            user=self.user,
-            category=category)
-        url = favorite_details_url(favorite_thing.id)
-        payload = {
-            'title': 'lagos',
-            'description': "",
-            'ranking': 10,
+            'ranking': 1,
             'categoryId': category.id
         }
         self.client.put(url, payload)
@@ -279,3 +258,13 @@ class PrivateRecipeApiTests(TestCase):
 
         favorite_thing_2.refresh_from_db()
         self.assertEqual(favorite_thing_2.ranking, 2)
+
+    def test_delete_favorite_thing(self):
+        """Test deleting of favorite thing"""
+        category = sample_category()
+        favorite_thing = sample_favorite_thing(
+            user=self.user,
+            category=category)
+        url = favorite_details_url(favorite_thing.id)
+        res = self.client.delete(url)
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
