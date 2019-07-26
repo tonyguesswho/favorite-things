@@ -3,8 +3,7 @@ python:
   - "3.6"
 
 env:
-  global:
-    secure: <long encrypted string>
+  DJANGO_KEY=secretkey
 
 services:
   - docker
@@ -12,7 +11,7 @@ services:
 before_script: pip install docker-compose
 
 script:
-  - docker-compose run app sh -c "export DJANGO_KEY=secret"
+  - docker-compose run app sh -c "export DJANGO_KEY=$DJANGO_KEY"
   - docker-compose run app sh -c "coverage run --source="." manage.py test"
 
 after_script:
