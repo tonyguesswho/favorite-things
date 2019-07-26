@@ -2,7 +2,7 @@
 
 1.  How long did you spend on the coding test below?
 
-    I didnt work on the test in one go but in total I spent approximately 80 hours
+    I didn't work on the test in one go but in total I spent approximately 80 hours
 
 2.  What would you add to your solution if you had more time?
 
