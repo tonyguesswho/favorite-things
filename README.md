@@ -1,4 +1,6 @@
+[![Build Status](https://travis-ci.org/tonyguesswho/favorite-things.svg?branch=develop)](https://travis-ci.org/tonyguesswho/favorite-things)
 ## Favorite Things  App
+[![Coverage Status](https://coveralls.io/repos/github/tonyguesswho/favorite-things/badge.svg?branch=develop)](https://coveralls.io/github/tonyguesswho/favorite-things?branch=develop)
 
 ## Description
 The **favorite-things-app** is an application that allows the user to track and mannage their favorite things. The project is divided into two parts. The Frontend build on **VueJs - Javascript** and the Backend built on **Django(DRF) - Python**.
