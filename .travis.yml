@@ -12,5 +12,7 @@ services:
 before_script: pip install docker-compose
 
 script:
-  - export DJANGO_KEY=${DJANGO_KEY}
-  - docker-compose run app sh -c "python manage.py test && flake8"
+  - docker-compose run app sh -c "coverage run --source="." manage.py test"
+
+after_script:
+- docker-compose run app sh -c "codeclimate-test-reporter --file .coverage"
