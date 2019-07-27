@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/tonyguesswho/favorite-things.svg?branch=develop)](https://travis-ci.org/tonyguesswho/favorite-things)
 ## Favorite Things  App
-[![Coverage Status](https://coveralls.io/repos/github/tonyguesswho/favorite-things/badge.svg?branch=develop)](https://coveralls.io/github/tonyguesswho/favorite-things?branch=develop)
+
 
 ## Description
 The **favorite-things-app** is an application that allows the user to track and mannage their favorite things. The project is divided into two parts. The Frontend build on **VueJs - Javascript** and the Backend built on **Django(DRF) - Python**.
@@ -131,11 +131,19 @@ I created  a test user to ease the process of testing the application
     ```
 
 ## Running tests
-
-On command line run:
-
+cd into the app folder and run
 ```
 python manage.py test
+```
+To run test with coverage  and coverage  report
+
+```
+coverage run --source="." manage.py test
+```
+after the above command run this to get coverage report
+
+```
+coverage report
 ```
 
 
@@ -157,6 +165,17 @@ The `docker-compose build` command builds the docker image where the api and its
 Also this command does the necessary setup that is needed for the API to connect to the database.
 
 To run test run `docker-compose run app sh -c "python manage.py test"`
+
+To run test with coverage  and coverage  report
+
+```
+docker-compose run app sh -c "coverage run --source="." manage.py test"
+```
+after the above command run this to get coverage report
+
+```
+docker-compose run app sh -c "coverage report"
+```
 
 The `docker-compose up -d` or `make start` command starts the application while ensuring that the postgres database is seeded before the api starts.
 
